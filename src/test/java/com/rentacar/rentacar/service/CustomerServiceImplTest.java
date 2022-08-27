@@ -2,7 +2,9 @@ package com.rentacar.rentacar.service;
 
 import com.rentacar.rentacar.entity.Car;
 import com.rentacar.rentacar.entity.Customer;
+import com.rentacar.rentacar.repository.CarRepository;
 import com.rentacar.rentacar.repository.CustomerRepository;
+import org.assertj.core.internal.bytebuddy.matcher.ElementMatcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,8 +16,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.core.Is.*;
+import static org.hamcrest.MatcherAssert.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -24,17 +30,15 @@ class CustomerServiceImplTest {
     @Mock
     CustomerRepository customerRepository;
 
-    private CustomerServiceImpl customerService;//1.0 класа който искам да тествам
+    private CustomerServiceImpl customerService;
 
     @Mock
     private CarService carService;
 
     @BeforeEach
-    public void SetUp() { // 1.2 създаваме си в CustomerServiceImpl - Конструктор да приема CustomerRepository - за Тест
-        customerService = new CustomerServiceImpl(customerRepository, carService);//1.1 създава се всеки път един Обект
+    public void SetUp() {
+        customerService = new CustomerServiceImpl(customerRepository, carService);
 
-        //1.4 public CustomerServiceImpl (CustomerRepository customerRepository) { добра практита при Тест
-        //          this.customerRepository = customerRepository;
     }
 
     @Test
@@ -44,17 +48,58 @@ class CustomerServiceImplTest {
     }
 
     @Test
+    public void getAllCars_when2Cars_2CarsBrand() {
+
+        CarRepository repository = mock(CarRepository.class);
+        when(repository.findAll())
+                .thenReturn(List.of(new Car() {{
+                                        setId(1L);
+                                        setBrand("Audi");
+                                    }},
+                        new Car() {{
+                            setId(2L);
+                            setBrand("BMW");
+                        }}));
+
+
+        CarServiceImpl service = new CarServiceImpl(repository);
+
+        String[] carBrand = service.getAllCars();
+
+        assertThat(carBrand.length, is(2));
+
+
+    }
+
+    @Test
+    public void getAllCars_whenNoCars_emptyArray() {
+
+        CarRepository repository = mock(CarRepository.class);
+        when(repository.findAll())
+                .thenReturn(List.of());
+
+        CarServiceImpl service = new CarServiceImpl(repository);
+
+        String[] carBrand = service.getAllCars();
+
+        assertThat(carBrand.length, is(0));
+
+
+    }
+
+
+    @Test
     public void verifySave() {
         Customer expectedCustomer = Customer.builder()
                 .id(1L)
                 .name("Ivan")
                 .build();
 
-        Mockito.when(customerRepository.save(any(Customer.class)))
+        when(customerRepository.save(any(Customer.class)))
                 .thenReturn(Customer.builder()
                         .id(1L)
                         .name("Ivan")
-                        .build());//1.1 връща customer който сме създали с Customer.builder() тук
+                        .build());
 
         Customer actualCustomer = customerService.save(expectedCustomer);
 
@@ -68,7 +113,7 @@ class CustomerServiceImplTest {
     public void verifyFindByAllName() {
 
 
-        Mockito.when(customerRepository.findAllByName(any(String.class)))
+        when(customerRepository.findAllByName(any(String.class)))
                 .thenReturn(Collections.singletonList(Customer.builder().build()));//връща само списък с 1 елемент
 
         List<Customer> actual = customerService.findByName("");
@@ -77,4 +122,6 @@ class CustomerServiceImplTest {
         assertEquals(1, actual.size());
 
     }
+
+
 }

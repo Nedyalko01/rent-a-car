@@ -9,4 +9,8 @@ public interface CarService {
     Car save (Car car);
 
     List<Car> findAll();
+
+    String [] getAllCars();
+
+    Car[] getCarsByBrand(String brand);
 }

@@ -5,9 +5,10 @@ import com.rentacar.rentacar.repository.CarRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class CarServiceImpl implements CarService{
+public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
 
@@ -24,5 +25,24 @@ public class CarServiceImpl implements CarService{
     @Override
     public List<Car> findAll() {
         return carRepository.findAll();
+    }
+
+    @Override
+    public String [] getAllCars() {
+        return carRepository.findAll()
+                .stream()
+                .map(Car::getBrand)
+                .toArray(String[]::new);
+    }
+
+
+    @Override
+    public Car[] getCarsByBrand(String brand) {
+        Car[] cars = carRepository.findAll()
+                .stream()
+                .filter(car -> car.getBrand().equals(brand))
+                .toArray(Car[]::new);
+
+        return cars;
     }
 }

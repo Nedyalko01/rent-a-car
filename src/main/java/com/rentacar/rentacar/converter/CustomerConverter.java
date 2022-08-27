@@ -19,12 +19,11 @@ public class CustomerConverter {
 
     public Customer map(CustomerRequest customerRequest) {
 
-
         return Customer.builder()
                 .name(customerRequest.getName())
                 .cars(customerRequest.getCarRequests()
-                        .stream()//1.1
-                        .map(carRequest -> carConverter.map(carRequest))//1.2
+                        .stream()
+                        .map(carRequest -> carConverter.map(carRequest))
                         .collect(Collectors.toSet()))
 
                 .build();

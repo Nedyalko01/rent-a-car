@@ -29,6 +29,7 @@ public class Car {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "cars" )
+
     private Set<Customer> customer;
 
 

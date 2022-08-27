@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "customers")
@@ -19,19 +22,30 @@ public class CustomerController {
     private final CustomerConverter customerConverter;
 
     @PostMapping
-    public ResponseEntity<HttpStatus> save (@RequestBody final CustomerRequest customerRequest) {
-        final Customer customer = customerConverter.map(customerRequest);
-        final Customer saved = customerService.save(customer);
-
+    public ResponseEntity<HttpStatus> save(@RequestBody final CustomerRequest customerRequest) { // POST API
+        final Customer customer = customerConverter.map(customerRequest);//мапва
+        final Customer saved = customerService.save(customer);//записва
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HttpStatus> findById(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> findById(@PathVariable Long id) { // GET by id
         Customer FromDBbyId = customerService.findById(id);
         return ResponseEntity.ok(HttpStatus.OK);
+
+
+    }
+
+    @RequestMapping(value = "/customers")
+    public ResponseEntity<HttpStatus> findAll () {
+        List<Customer> customers = customerService.findAll();
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+
+
 
     }
 
 
-}
+

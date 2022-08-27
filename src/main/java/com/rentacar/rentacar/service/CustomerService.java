@@ -12,5 +12,7 @@ public interface CustomerService {
 
     List<Customer> findAll();
 
-    List<Customer> findByName(String name);// връща Лист от имена при -> подадено име
+    List<Customer> findByName(String name);
+
+
 }
