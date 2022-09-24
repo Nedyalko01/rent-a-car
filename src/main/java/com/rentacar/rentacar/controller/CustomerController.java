@@ -22,14 +22,14 @@ public class CustomerController {
     private final CustomerConverter customerConverter;
 
     @PostMapping
-    public ResponseEntity<HttpStatus> save(@RequestBody final CustomerRequest customerRequest) { // POST API
-        final Customer customer = customerConverter.map(customerRequest);//мапва
-        final Customer saved = customerService.save(customer);//записва
+    public ResponseEntity<HttpStatus> save(@RequestBody final CustomerRequest customerRequest) {
+        final Customer customer = customerConverter.map(customerRequest);
+        final Customer saved = customerService.save(customer);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HttpStatus> findById(@PathVariable Long id) { // GET by id
+    public ResponseEntity<HttpStatus> findById(@PathVariable Long id) {
         Customer FromDBbyId = customerService.findById(id);
         return ResponseEntity.ok(HttpStatus.OK);
 
@@ -37,15 +37,13 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/customers")
-    public ResponseEntity<HttpStatus> findAll () {
+    public ResponseEntity<HttpStatus> findAll() {
         List<Customer> customers = customerService.findAll();
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
 
-
-
-    }
+}
 
 
 

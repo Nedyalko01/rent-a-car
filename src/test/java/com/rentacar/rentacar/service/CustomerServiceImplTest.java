@@ -114,7 +114,7 @@ class CustomerServiceImplTest {
 
 
         when(customerRepository.findAllByName(any(String.class)))
-                .thenReturn(Collections.singletonList(Customer.builder().build()));//връща само списък с 1 елемент
+                .thenReturn(Collections.singletonList(Customer.builder().build()));
 
         List<Customer> actual = customerService.findByName("");
 

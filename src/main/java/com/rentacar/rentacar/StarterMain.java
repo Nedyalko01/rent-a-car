@@ -7,7 +7,9 @@ import com.rentacar.rentacar.service.CustomerServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -54,3 +56,5 @@ public class StarterMain implements CommandLineRunner {
 
     }
 }
+
+

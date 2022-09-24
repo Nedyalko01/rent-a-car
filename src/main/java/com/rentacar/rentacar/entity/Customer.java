@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Data
@@ -23,6 +24,7 @@ public class Customer {
 
 
 
+
     @JsonManagedReference
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -34,6 +36,8 @@ public class Customer {
     )
 
     private Set<Car> cars;
+
+
 }
 
 
